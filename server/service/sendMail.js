@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const { errorMonitor } = require("nodemailer/lib/xoauth2");
+// const { errorMonitor } = require("nodemailer/lib/xoauth2");
 require("dotenv").config();
 const transport = nodemailer.createTransport({
   service: "gmail",

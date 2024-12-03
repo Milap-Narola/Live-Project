@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const User = require("../model/user.schema");
 const sendMail = require("../service/sendMail");
 const otps = new Map();
+
 const Signup = async (req, res) => {
   let { email, password } = req.body;
   try {
@@ -76,12 +77,27 @@ const Login = async (req, res) => {
     isActive: user.isActive,
   });
 };
+const GetAllUser = async (req, res) => {
+  let user = await User.find()
+  res.status(200).json(user);
+}
 
 const GetUser = async (req, res) => {
   let users = await User.find();
   res.status(200).json(users);
 };
 
+const DeleteMany = async (req, res) => {
+  let { ids } = req.body;
+  try {
+    await User.DeleteMany({ _id: { $in: ids } });
+    res.status(200).json({ msg: "users deleted" });
+  } catch (error) {
+    res.status(404).json({ msg: "error deleting users", error });
+
+
+  }
+}
 const deleteUser = async (req, res) => {
   let { id } = req.params;
   try {
@@ -137,4 +153,4 @@ const verifyAdmin = async (req, res) => {
     res.status(404).json({ err: error.message });
   }
 };
-module.exports = { Signup, Login, GetUser, verifyUser, deleteUser, getAdmins };
+module.exports = { Signup, Login, GetUser, verifyUser, verifyAdmin, deleteUser, getAdmins, GetAllUser,DeleteMany };
