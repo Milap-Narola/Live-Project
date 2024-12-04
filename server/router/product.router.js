@@ -1,13 +1,19 @@
-const { Router } = require("express")
-const { getAllProducts, updateProduct, deleteProduct, createProduct ,upload} = require("../controllers/product.controller")
-const upload = require("../utils/image.upload")
+const { Router } = require("express");
+const {
+  getProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} = require("../controllers/product.controller");
+const upload = require("../utils/image.Upload");
+const { decode } = require("../middlewares/decodeJwt");
 
-const productRouter = Router()
+const productRoute = Router();
+productRoute.get("/", getProducts);
+productRoute.get("/:productId", getProductById);
+productRoute.post("/", decode, upload.single("img"), createProduct);
+productRoute.patch("/:productId", decode, updateProduct);
+productRoute.delete("/:productId", decode, deleteProduct);
 
-productRouter.get("/all",getAllProducts)
-
-productRouter.post("/",upload.single("image"),createProduct)
-productRouter.patch("/update/:id",updateProduct)
-productRouter.delete("/delete/:id",deleteProduct)
-
-module.exports = productRouter;
+module.exports = productRoute;

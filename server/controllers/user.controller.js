@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const User = require("../model/user.schema");
+const User = require("../models/user.schema");
 const sendMail = require("../service/sendMail");
 const otps = new Map();
 
@@ -77,27 +77,27 @@ const Login = async (req, res) => {
     isActive: user.isActive,
   });
 };
-const GetAllUser = async (req, res) => {
-  let user = await User.find()
-  res.status(200).json(user);
-}
+// const GetAllUser = async (req, res) => {
+//   let user = await User.find()
+//   res.status(200).json(user);
+// }
 
 const GetUser = async (req, res) => {
   let users = await User.find();
   res.status(200).json(users);
 };
 
-const DeleteMany = async (req, res) => {
-  let { ids } = req.body;
-  try {
-    await User.DeleteMany({ _id: { $in: ids } });
-    res.status(200).json({ msg: "users deleted" });
-  } catch (error) {
-    res.status(404).json({ msg: "error deleting users", error });
+// const DeleteMany = async (req, res) => {
+//   let { ids } = req.body;
+//   try {
+//     await User.DeleteMany({ _id: { $in: ids } });
+//     res.status(200).json({ msg: "users deleted" });
+//   } catch (error) {
+//     res.status(404).json({ msg: "error deleting users", error });
 
 
-  }
-}
+//   }
+// }
 const deleteUser = async (req, res) => {
   let { id } = req.params;
   try {
@@ -148,9 +148,18 @@ const verifyAdmin = async (req, res) => {
       { isVerified: true },
       { new: true }
     );
+    try {
+      await sendMail(
+        user.email,
+        "account approval",
+        "<h1>account approved</h1>"
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
     res.status(200).json({ msg: "verified" }, { user });
   } catch (error) {
     res.status(404).json({ err: error.message });
   }
 };
-module.exports = { Signup, Login, GetUser, verifyUser, verifyAdmin, deleteUser, getAdmins, GetAllUser,DeleteMany };
+module.exports = { Signup, Login, GetUser, verifyUser, deleteUser, getAdmins,verifyAdmin};

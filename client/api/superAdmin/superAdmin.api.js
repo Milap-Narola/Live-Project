@@ -1,11 +1,12 @@
+import { getToken } from "../../utils/cookies.js";
 
-import { getToken } from "../../utils/Cookies.js";
+import { getBaseUrl } from "./config/api.config.js";
 
-const baseUrl = "http://localhost:8090";
+const baseURL = getBaseUrl();
 const superAdminApi = {
   getAdmins: async () => {
     try {
-      let req = await fetch(`${baseUrl}/user/all-admin`, {
+      let req = await fetch(`${baseURL}/user/all-admin`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${getToken()}`,

@@ -1,4 +1,3 @@
-
 let { token } = Cookies.get();
 console.log("token: " + token);
 

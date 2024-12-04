@@ -1,25 +1,29 @@
 const express = require('express');
+require("dotenv").config()
 const cors = require('cors');
-const path = require('path');
 const connectDb = require('./config/db');
 const { userRouter } = require('./router/user.router');
-const { productRouter } = require('./router/product.router');
-require("dotenv").config()
+const productRoute = require('./router/product.router');
+const CommentRouter = require('./router/comment.router');
+const { RatingRouter } = require('./router/rating.router');
+const path = require('path');
 
 const app = express()
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-app.use(express.static(path.join(__dirname, "./client")));
+app.use(express.static(path.join(__dirname, "uploads")));
 
 app.get("/", (req, res) => {
     res.status(200).json({ msg: "Hello Node " });
 });
 app.use("/user", userRouter);
-app.use("/product", productRouter);
+app.use("/product", productRoute);
+// app.use("/comment",CommentRouter);
+app.use("/rating", RatingRouter);
 
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8090;
 app.listen(PORT, () => {
     console.log(`listening on https:localhost:${PORT}`);
     connectDb()

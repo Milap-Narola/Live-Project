@@ -1,58 +1,67 @@
-const Product = require("../models/product.model")
-const multer = require('multer');
 
-const storage = multer.diskStorage({
-    destination: "uploads",
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + file.originalname)
-    },
-});
-
-const upload = multer({ storage: storage,})
-
+const Product = require("../models/product.schema");
 
 const createProduct = async (req, res) => {
-    if (req.file) {
-        req.body.image = req.file.image;
-    }
-    try {
-        req.body.user = req.body.user;
+  // console.log(req.body, req.file);
 
-        let product = await Product.create(req.body);
-        res.status(201).json(product);
-    } catch (e) {
-        res.status(400).json({ err: e.message });
-    }
-}
+  if (req.file) {
+    req.body.img = req.file.path;
+  }
 
+  req.body.user = req.user.id;
+  try {
+    let product = await Product.create(req.body);
+    res.status(201).send(product);
+  } catch (error) {
+    res.status(500).send({ error: error });
+  }
+};
 
-const getAllProducts = async (req, res) => {
-    try {
-        let products = await Product.find().populate('user')
-        res.status(200).send(products)
-    } catch (error) {
-        res.status(404).json({ err: error.message })
-    }
-}
+const getProducts = async (req, res) => {
+  try {
+    let products = await Product.find();
+    res.status(200).send(products);
+  } catch (error) {
+    res.status(500).send({ error: error });
+  }
+};
+
+const getProductById = async (req, res) => {
+  try {
+    let { productId } = req.params;
+    let product = await Product.findById(productId);
+    res.status(200).send(product);
+  } catch (error) {
+    res.status(500).send({ error: error });
+  }
+};
 
 const updateProduct = async (req, res) => {
-    try {
-        let { id } = req.params
-        let product = Product.findByIdAndUpdate(id, req.body, { new: true })
-        res.status(200).send(product)
-    } catch (error) {
-        res.status(404).json({ err: error.message })
-    }
-}
+  try {
+    const { productId } = req.params;
+    let product = await Product.findByIdAndUpdate(productId, req.body, {
+      new: true,
+    });
+    res.status(200).send(product);
+  } catch (error) {
+    res.status(500).send({ error: error });
+  }
+};
+
 const deleteProduct = async (req, res) => {
-    try {
-        let { id } = req.params
-        await Product.findByIdAndDelete(id)
-        res.status(200).send({ msg: "Product deleted successfully" })
-    } catch (error) {
-        res.status(404).json({ err: error.message })
-    }
-}
+  try {
+    const { productId } = req.params;
+    let product = await Product.findByIdAndDelete(productId);
+    res.status(200).send(product);
+  } catch (error) {
+    res.status(500).send({ error: error });
+  }
+};
 
-
-module.exports = { getAllProducts, updateProduct, deleteProduct, createProduct, upload}
+module.exports = {
+  createProduct,
+  getProducts,
+  updateProduct,
+  deleteProduct,
+  getProductById,
+};

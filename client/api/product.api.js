@@ -1,40 +1,73 @@
-const baseUrl = "http://localhost:8090";
+import { getToken } from "../utils/cookies.js";
+import { getBaseUrl } from "./config/api.config.js";
+
+const baseURL = getBaseUrl();
 
 const productApi = {
-    create: async (data) => {
-        try {
-            let req = await fetch(`${baseURL()}/product/create`, {
-                method: "POST",
-                headers: {
-                    "content-type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify(data)
-            });
-            if (!req.ok) {
-                throw new Error("Failed to create product");
-            }
-            let res = await req.json();
-            return res;
-        } catch (error) {
-            console.error("Error during product creation:", error.message);
-        }
+    get: async () => {
+      try {
+        let product = await fetch(`${baseURL}/products`);
+        let res = await product.json();
+        return res;
+      } catch (error) {
+        console.log(error);
+      }
     },
-    getAllProducts:async()=>{
-        try {
-            let req = await fetch(`${baseURL()}/product/all`, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            });
-            if (!req.ok) {
-                throw new Error("Failed to fetch products");
-            }
-            let res = await req.json();
-            return res;
-        } catch (error) {
-            console.error("Error during fetching products:", error.message);
-        }
-    }
-}
+    post: async (data) => {
+      try {
+        let product = await fetch(`${baseURL}/products`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+          body: data,
+        });
+        let res = await product.json();
+        return res;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    getById: async (id) => {
+      try {
+        let product = await fetch(`${baseURL}/products/${id}`);
+        let res = await product.json();
+        return res;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  
+    patch: async (id, data) => {
+      try {
+        let product = await fetch(`${baseURL}/products/${id}`, {
+          method: "PATCH",
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${getToken()}`,
+          },
+          body: JSON.stringify(data),
+        });
+        let res = await product.json();
+        return res;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    delete: async (id) => {
+      try {
+        let product = await fetch(`${baseURL}/products/${id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        });
+        let res = await product.json();
+        return res;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  };
+  
+  export default productApi;

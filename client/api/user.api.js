@@ -1,8 +1,10 @@
-const baseUrl = "http://localhost:8090";
+import { getToken } from "../utils/cookies.js";
+import { getBaseUrl } from "../api/config/api.config.js";
+const baseURL = getBaseUrl();
 const userApi = {
   signup: async (user) => {
     try {
-      let req = await fetch(`${baseUrl}/user/signup`, {
+      let req = await fetch(`${baseURL}/user/signup`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -20,7 +22,7 @@ const userApi = {
   },
   login: async (user) => {
     try {
-      let req = await fetch(`${baseUrl}/user/login`, {
+      let req = await fetch(`${baseURL}/user/login`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -39,7 +41,28 @@ const userApi = {
       console.log("Failed to sign up", error);
     }
   },
-
+  delete: async (id) => {
+    await fetch(`${baseURL}/user/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+  },
+  verifyadmin: async (id) => {
+    try {
+      let req = await fetch(`${baseURL}/user/verifyadmin/${id}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      });
+      let res = await req.json();
+      console.log(res);
+    } catch (error) {
+      console.log(error.message);
+    }
+  },
 };
 
 export default userApi;
