@@ -63,4 +63,4 @@ cd ecommerce-clone</code></pre>
 <p>Contributions are welcome! If you encounter any issues or have suggestions for improvements, please open an issue or submit a pull request.</p>
 
 <h2>License</h2>
-<p>This project is licensed under the MIT License.</p>
+<p>This project is licensed under the MILAP NAROLA  License.</p>
