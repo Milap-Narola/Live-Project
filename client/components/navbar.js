@@ -6,7 +6,7 @@ const logOut = () => {
   console.log("Decoded token");
 
   Cookies.remove("token");
-  window.location.href = "/pages/login.html";
+  window.location.href = "/client/pages/login.html";
 };
 
 const navbar = () => {
@@ -14,12 +14,12 @@ const navbar = () => {
   if (decodedToken) {
     tag = `<a class="nav-link" id=logout>Logout</a>`;
   } else {
-    tag = `<a class="nav-link" href="/pages/login.html">Login</a>`;
+    tag = `<a class="nav-link" href="/client/pages/login.html">Login</a>`;
   }
   return `
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/index.html">Navbar</a>
+        <a class="navbar-brand" href="/client/index.html">Navbar</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -34,23 +34,26 @@ const navbar = () => {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/">Home</a>
+              <a class="nav-link active" aria-current="page" href="/client/index.html">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/pages/products.html">Products</a>
+              <a class="nav-link" href="/client/pages/product.html">Products</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/pages/cart.html">Cart</a>
+              <a class="nav-link" href="/client/pages/cart.html">Cart</a>
+            </li>
+              <li class="nav-item">
+              <a class="nav-link" href="">Rating</a>
             </li>
              <li class="nav-item">
-              <a class="nav-link" href="/pages/profile.html">profile</a>
+              <a class="nav-link" href="/client/pages/profile.html">profile</a>
             </li>
             <li class="nav-item">
               ${tag}
             </li>
             <li class="nav-item">
               <a class="nav-link" ${
-                decodedToken ? "" : ` href=/pages/signup.html`
+                decodedToken ? "" : ` href=/client/pages/signup.html`
               }>${decodedToken ? decodedToken.username : "Signup"}</a>
             </li>
           </ul>

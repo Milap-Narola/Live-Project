@@ -24,16 +24,19 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <link rel="stylesheet" href="/css/login.css" />
+    <link rel="stylesheet" href="/client/css/login.css" />
   </head>
   <body>
     <div class="container-fluid">
       <div id="navbar"></div>
-      <div id="form">
-        <form id="userDetails">
-          <input type="email" id="email" placeholder="Email" />
+      <div id="form" class="mx-auto">
+        <form id="userDetails" class="d-flex flex-column m-5 p-5 gap-2" >
+          <input type="email" id="email" placeholder="Email"/>
           <input type="password" id="password" placeholder="Password" />
-          <input type="submit" value="Login" />
+          <input type="submit" class="btn btn-primary " value="Login" />
+          <div class="btn-info text-center ">
+            <a href="/client/pages/signup.html" class="btn btn btn-success  ">Create Account!</a>
+          </div>
         </form>
       </div>
     </div>

@@ -1,0 +1,16 @@
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+#form {
+    background-image: url(https://www.kindpng.com/picc/m/273-2739012_login-bg-hd-png-download.png);
+    background-size: 100%;
+    background-repeat:no-repeat;
+    height: 250px;
+    width: 500px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}

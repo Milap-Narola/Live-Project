@@ -24,24 +24,24 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <link rel="stylesheet" href="/css/signup.css" />
+    <link rel="stylesheet" href="/client/css/signup.css" />
   </head>
   <body>
     <div class="container-fluid">
       <div id="navbar">
         <!--  navbar from js .... -->
       </div>
-      <div id="form">
-        <form id="userDetails">
-          <input type="text" id="username" placeholder="username" />
-          <input type="email" id="email" placeholder="email" />
-          <input type="number" name="" id="number" placeholder="number" />
-          <input type="text" id="password" placeholder="password" />
-          <input type="submit" value="signup" />
+      <div id="form" class="mx-auto">
+        <form id="userDetails" class="d-flex flex-column m-5 p-5 gap-2">
+          <input type="text" id="username" placeholder="Username" />
+          <input type="email" id="email" placeholder="Email" />
+          <input type="number" name="" id="number" placeholder="Number" />
+          <input type="text" id="password" placeholder="Password" />
+          <input type="submit" class="btn btn-primary " value="Signup" />
+          <div class="btn-info text-center ">
+            <a href="/client/pages/admin/signup.html" class="btn btn btn-success  ">Create Admin Account</a>
+          </div>
         </form>
-      </div>
-      <div class="btn-info">
-        <a href="/pages/admin/signup.html">create admin account</a>
       </div>
     </div>
   </body>

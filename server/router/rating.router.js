@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const {
-  getRatingByProdcutId,
+  getRatingByProductId,
   createRating,
   updateRating,
   deleteRating,
@@ -9,7 +9,7 @@ const { decode } = require("../middlewares/decodeJwt");
 
 const RatingRouter = Router();
 
-RatingRouter.get("/:productId", getRatingByProdcutId);
+RatingRouter.get("/:productId", getRatingByProductId);
 RatingRouter.post("/", decode, createRating);
 RatingRouter.patch("/:ratingId", decode, updateRating);
 RatingRouter.delete("/:ratingId", decode, deleteRating);
