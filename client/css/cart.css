@@ -1,0 +1,47 @@
+/* General Styles */
+body {
+    background-color: #f8f9fa; /* Light background for better contrast */
+    font-family: Arial, sans-serif;
+}
+
+/* Navbar Styles */
+#navbar {
+    background-color: #343a40; /* Dark background for navbar */
+    padding: 10px;
+    color: white;
+}
+
+/* Container Styles */
+.container-fluid {
+    margin-top: 20px;
+}
+
+/* Cart Section Styles */
+#cart-container {
+    background-color: white; /* White background for cart section */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+#cart-items {
+    max-height: 300px; /* Limit height for scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+/* Button Styles */
+.btn {
+    margin-top: 10px;
+}
+
+/* Input Styles */
+input[type="text"],
+input[type="number"] {
+    width: calc(100% - 20px); /* Full width minus padding */
+}
+
+/* Summary Styles */
+#cart-summary {
+    padding: 15px;
+    border-radius: 5px;
+}

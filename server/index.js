@@ -6,7 +6,9 @@ const { userRouter } = require('./router/user.router');
 const productRoute = require('./router/product.router');
 const CommentRouter = require('./router/comment.router');
 const { RatingRouter } = require('./router/rating.router');
+const CartRouter = require('./router/cart.router');
 const path = require('path');
+const { decode } = require('punycode');
 
 const app = express()
 app.use(express.json());
@@ -19,8 +21,9 @@ app.get("/", (req, res) => {
 });
 app.use("/user", userRouter);
 app.use("/product", productRoute);
-// app.use("/comment",CommentRouter);
+// app.use("/comment", CommentRouter);
 app.use("/rating", RatingRouter);
+app.use("/cart", CartRouter);
 
 
 const PORT = process.env.PORT || 8090;
