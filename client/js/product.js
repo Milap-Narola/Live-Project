@@ -13,7 +13,7 @@ const mapper = (data) => {
     let priceTag = document.createElement("p");
     priceTag.innerHTML = price;
     let imgTag = document.createElement("img");
-    imgTag.src = `http://localhost:8090/${img}`;
+    imgTag.src = `https://node-live-project-kc2h.onrender.com/${img}`;
     div.append(imgTag, titleTag, priceTag);
     document.getElementById("productList").append(div);
   });
