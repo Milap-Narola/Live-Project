@@ -1,4 +1,4 @@
-const Comment = require("../models/comment.Schema");
+const Comment = require("../models/comment.model");
 
 const getCommentByProdcutId = async (req, res) => {
   try {

@@ -1,5 +1,5 @@
 
-const Product = require("../models/product.schema");
+const Product = require("../models/product.model");
 
 const createProduct = async (req, res) => {
   // console.log(req.body, req.file);

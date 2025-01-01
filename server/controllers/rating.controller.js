@@ -1,4 +1,4 @@
-const Rating = require("../models/rating.Schema");
+const Rating = require("../models/rating.model");
 
 const getRatingByProductId = async (req, res) => {
   try {

@@ -1,68 +1,107 @@
-const Cart = require('../models/cart.Schema');
 
-const getCart = async (req, res) => {
+const Cart = require("../models/cart.model");
+// const Razorpay = require("razorpay");
+const getCartByUserId = async (req, res) => {
+  const userId = req.user.id;
   try {
-    const userId = req.params.userId;
-    const cart = await Cart.findOne({ userId });
-    res.render('cart', { cart: cart || { items: [] } });
+    let cart = await Cart.find({ user: userId }).populate("product");
+    console.log("cart", cart);
+
+    res.send(cart);
   } catch (error) {
-    res.status(500).json({ error: 'Error fetching cart' });
+    console.log("error", error);
+
+    res.status(500).send({ error: error.message });
   }
-}
+};
 
 const addToCart = async (req, res) => {
+  req.body.user = req.user.id;
+
+  const { user, product } = req.body;
   try {
-    const { userId, productId, quantity, price } = req.body;
-    let cart = await Cart.findOne({ userId });
+    let isExists = await Cart.findOne({ user: user, product: product });
 
-    if (!cart) {
-      cart = new Cart({ userId, items: [] });
-    }
-
-    const existingItem = cart.items.find(item =>
-      item.productId.toString() === productId
-    );
-
-    if (existingItem) {
-      existingItem.quantity += quantity;
+    if (isExists) {
+      isExists.qty += 1;
+      await isExists.save();
+      res.status(200).send(isExists);
     } else {
-      cart.items.push({ productId, quantity, price });
+      let cart = await Cart.create(req.body);
+
+      res.status(201).send(cart);
     }
-
-    cart.totalAmount = cart.items.reduce((total, item) =>
-      total + (item.price * item.quantity), 0
-    );
-
-    await cart.save();
-    res.json(cart);
   } catch (error) {
-    res.status(500).json({ error: 'Error adding to cart' });
+    res.status(500).send({ error: error.message });
   }
-}
+};
 
 const removeFromCart = async (req, res) => {
+  const { cartId } = req.params;
   try {
-    const { userId, productId } = req.params;
-    const cart = await Cart.findOne({ userId });
-
-    if (!cart) {
-      return res.status(404).json({ error: 'Cart not found' });
-    }
-
-    cart.items = cart.items.filter(item =>
-      item.productId.toString() !== productId
-    );
-
-    cart.totalAmount = cart.items.reduce((total, item) =>
-      total + (item.price * item.quantity), 0
-    );
-
-    await cart.save();
-    res.json(cart);
+    let cart = await Cart.findByIdAndDelete(cartId);
+    res.status(200).send(cart);
   } catch (error) {
-    res.status(500).json({ error: 'Error removing from cart' });
+    res.status(500).send({ error: error.message });
   }
-}
+};
+
+const addQuantity = async (req, res) => {
+  let { cartId } = req.params;
+  try {
+    let cart = await Cart.findById(cartId);
+    cart.qty += 1;
+    await cart.save();
+    res.status(200).send(cart);
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+};
+
+const removeQuantity = async (req, res) => {
+  let { cartId } = req.params;
+  try {
+    let cart = await Cart.findById(cartId);
+    if (cart.qty >= 2) {
+      cart.qty -= 1;
+      await cart.save();
+      res.status(200).send(cart);
+    } else {
+      cart = await Cart.findByIdAndDelete(cartId);
+      res.status(200).send(cart);
+    }
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+};
+
+// const razorpay = new Razorpay({
+//   key_id: "rzp_test_1eJt4xUEnDxmMV",
+//   key_secret: "N74jjIAr2mbCob4lizRZHCvh",
+// });
 
 
-module.exports = {getCart,addToCart,removeFromCart};
+const checkout = async (req, res) => {
+  const { amount } = req.body;
+
+  const options = {
+    amount: amount * 100,
+    currency: "INR",
+  };
+
+  try {
+    let data = await razorpay.orders.create(options);
+    res.status(200).send(data);
+  } catch (error) {
+    res.status(500).send({ err: error });
+  }
+};
+
+module.exports = {
+  getCartByUserId,
+  addQuantity,
+  removeQuantity,
+  removeFromCart,
+  addToCart,
+  checkout,
+};

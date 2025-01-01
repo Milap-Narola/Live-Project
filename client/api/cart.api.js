@@ -4,25 +4,24 @@ import { getBaseUrl } from "./config/api.config.js";
 const baseURL = getBaseUrl();
 
 const cartApi = {
-    // Get cart contents
-    get: async (userId) => {
+    getUserById: async () => {
         try {
-            const response = await fetch(`${baseURL}/cart/${userId}`, {
+            const response = await fetch(`${baseURL}/cart/`, {
                 headers: {
                     Authorization: `Bearer ${getToken()}`
                 }
             });
-            return await response.json();
+            let res = await cart.json();
+            return res;
         } catch (error) {
             console.log(error);
-            throw new Error('Failed to fetch cart');
         }
     },
 
-    // Add item to cart
-    addItem: async (data) => {
+    addItem: async (product) => {
+        console.log(product);
         try {
-            const response = await fetch(`${baseURL}/cart/add`, {
+            const cart = await fetch(`${baseURL}/cart`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -30,17 +29,30 @@ const cartApi = {
                 },
                 body: JSON.stringify(data)
             });
-            return await response.json();
+            let res = await cart.json();
+            console.log("res", res)
+            return res;
         } catch (error) {
             console.log(error);
-            throw new Error('Failed to add item to cart');
         }
     },
-
-    // Update item quantity
-    updateQuantity: async (userId, productId, quantity) => {
+    deleteFromCart: async (productId) => {
         try {
-            const response = await fetch(`${baseURL}/cart/${userId}/update/${productId}`, {
+            let cart = await fetch(`${baseURL}/cart/${productId}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${getToken()}`,
+                },
+            });
+            let res = await cart.json();
+            return res;
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    addQuantity: async (productId) => {
+        try {
+            const cart = await fetch(`${baseURL}/cart/add-qty/${productId}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -48,46 +60,46 @@ const cartApi = {
                 },
                 body: JSON.stringify({ quantity })
             });
-            return await response.json();
+            let res = await cart.json();
+            return res;
         } catch (error) {
             console.log(error);
             throw new Error('Failed to update cart item');
         }
     },
 
-    // Remove item from cart
-    removeItem: async (userId, productId) => {
+    removeQuantity: async (productId) => {
         try {
-            const response = await fetch(`${baseURL}/cart/${userId}/remove/${productId}`, {
-                method: "DELETE",
+            const cart = await fetch(`${baseURL}/cart/remove-qty${productId}`, {
+                method: "PATCH",
                 headers: {
                     Authorization: `Bearer ${getToken()}`
                 }
             });
-            return await response.json();
+            let res = await cart.json();
+            return res;
         } catch (error) {
             console.log(error);
-            throw new Error('Failed to remove item from cart');
         }
     },
 
-    // Clear entire cart
-    clear: async (userId) => {
-        try {
-            const response = await fetch(`${baseURL}/cart/${userId}/clear`, {
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${getToken()}`
-                }
-            });
-            return await response.json();
-        } catch (error) {
-            console.log(error);
-            throw new Error('Failed to clear cart');
-        }
-    },
 
-    // Get cart summary (total items, total amount)
+    // clear: async (userId) => {
+    //     try {
+    //         const cart = await fetch(`${baseURL}/cart/${userId}/clear`, {
+    //             method: "DELETE",
+    //             headers: {
+    //                 Authorization: `Bearer ${getToken()}`
+    //             }
+    //         });
+    //         let res = await cart.json();
+    //         return res;
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // },
+
+
     getSummary: async (userId) => {
         try {
             const response = await fetch(`${baseURL}/cart/${userId}/summary`, {

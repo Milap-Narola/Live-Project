@@ -13,4 +13,4 @@ CommentRouter.get("/:productId", getCommentByProdcutId);
 CommentRouter.post("/", decode, createComment);
 CommentRouter.patch("/:commentId", decode, updateComment);
 CommentRouter.delete("/:commentId", decode, deleteComment);
-module.exports = { CommentRouter };
+module.exports = CommentRouter;

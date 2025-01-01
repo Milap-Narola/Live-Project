@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const User = require("../models/user.schema");
+const User = require("../models/user.model");
 const sendMail = require("../service/sendMail");
 const otps = new Map();
 
